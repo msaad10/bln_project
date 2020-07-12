@@ -3,7 +3,7 @@ const db = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
     password : '',
-    database : 'smartgrid'
+    database : 'dataledger'
 });
 
 //connect
