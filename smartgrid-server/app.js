@@ -2,10 +2,6 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
-const microgridRoutes = require("./api/routes/microgrid");
-const prosumerRoutes = require("./api/routes/prosumer");
-const adminRoutes = require("./api/routes/admin");
-const smartMeterRoutes = require("./api/routes/smartmeter");
 const apiRoutes = require("./api/routes/api");
 
 app.use(morgan("dev"));
@@ -26,10 +22,6 @@ app.use((req, res, next) => {
 });
 
 // Routes which should handle requests
-app.use('/microgrid', microgridRoutes);
-app.use('/prosumer', prosumerRoutes);
-app.use('/admin', adminRoutes);
-app.use('/smartmeter', smartMeterRoutes);
 app.use('/api', apiRoutes);
 
 app.use((req, res, next) => {
