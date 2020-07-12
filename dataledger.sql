@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2020 at 02:32 PM
--- Server version: 10.1.35-MariaDB
--- PHP Version: 7.2.9
+-- Generation Time: Jul 12, 2020 at 05:26 PM
+-- Server version: 10.4.6-MariaDB
+-- PHP Version: 7.3.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -36,6 +36,31 @@ CREATE TABLE `data` (
   `hash` varchar(300) NOT NULL,
   `fileName` varchar(500) NOT NULL,
   `fileType` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `data`
+--
+
+INSERT INTO `data` (`id`, `user_id`, `company_name`, `description`, `hash`, `fileName`, `fileType`) VALUES
+(25, 1, 'Saad (Pvt) Ltd', 'aslmdl;a', '68d5ae2bcb39dee20bdfd06121c10cde07c34560bd372ad024775d86723bfda5', 'Haris Baig Head Front End Development', 'jpg'),
+(26, 3, 'Haris (Pvt) Ltd', 'alsdmpalsdmalmc,l sacn k', 'a,sld,asldmlasmdoasnmdian', 'asdk', 'ss');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transaction`
+--
+
+CREATE TABLE `transaction` (
+  `id` int(11) NOT NULL,
+  `request_id` varchar(100) DEFAULT NULL,
+  `respondent_id` varchar(100) DEFAULT NULL,
+  `request_hash` varchar(100) DEFAULT NULL,
+  `is_request` varchar(100) DEFAULT NULL,
+  `verification` varchar(100) DEFAULT NULL,
+  `response_hash` varchar(100) DEFAULT NULL,
+  `time_stamp` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -73,6 +98,12 @@ ALTER TABLE `data`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `transaction`
+--
+ALTER TABLE `transaction`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -87,7 +118,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `data`
 --
 ALTER TABLE `data`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `transaction`
+--
+ALTER TABLE `transaction`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
