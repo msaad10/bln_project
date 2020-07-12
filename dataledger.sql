@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2020 at 06:19 PM
+-- Generation Time: Jul 12, 2020 at 02:32 PM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -31,6 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `data` (
   `id` int(100) NOT NULL,
   `user_id` int(100) NOT NULL,
+  `company_name` varchar(100) NOT NULL,
   `description` varchar(100) NOT NULL,
   `hash` varchar(300) NOT NULL,
   `fileName` varchar(500) NOT NULL,
@@ -48,8 +49,17 @@ CREATE TABLE `user` (
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `public_key` varchar(256) NOT NULL
+  `public_key` varchar(700) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`, `name`, `public_key`) VALUES
+(1, 'saad@gmail.com', 'saad123', 'Saad (Pvt) Ltd', 'a'),
+(2, 'anas@gmail.com', 'anas123', 'Anas (Pvt) Ltd', 'b'),
+(3, 'haris@gmail.com', 'haris123', 'Haris (Pvt) Ltd', 'c');
 
 --
 -- Indexes for dumped tables
@@ -77,13 +87,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `data`
 --
 ALTER TABLE `data`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
