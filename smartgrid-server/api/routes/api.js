@@ -7,6 +7,7 @@ const axios = require('axios');
 const bcrypt = require('bcrypt');
 const { result } = require('lodash');
 
+var multer = require('multer')
 
 //delete by data id
 router.delete('/delete/:id', (req, res) => {
@@ -44,6 +45,62 @@ router.post('/uploadData/:userid', (req, res) => {
         }
         
     });
+});
+
+router.post('/postRequest', (req, res) => {
+
+    let sql = `INSERT INTO transaction(request_id, respondent_id, request_hash, is_request, verification, response_hash, time_stamp) VALUES('${req.body.request_id}', '${req.body.respondent_id}', '${req.body.request_hash}', 'true', null, null, null)`;
+    let query = db.query(sql, [req.params.userid], (err, results) => {
+        if (err) throw err;
+
+        if(results.affectedRows == 1)
+        {
+            results.message = "Success";
+                res.status(200).json(   
+                    results
+            );
+        }
+        
+    });
+});
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+    cb(null, 'public')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' +file.originalname )
+  }
+})
+
+var upload = multer({ storage: storage }).single('file');
+
+router.post('/sendFile', (req, res) => {
+
+        upload(req, res, function (err) {
+            if (err instanceof multer.MulterError) {
+                return res.status(500).json(err)
+            } else if (err) {
+                return res.status(500).json(err)
+            }
+            return res.status(200).send(req.file)
+
+    })
+
+    
+    // let sql = `INSERT INTO transaction(request_id, respondent_id, request_hash, is_request, verification, response_hash, time_stamp) VALUES('${req.body.request_id}', '${req.body.respondent_id}', '${req.body.request_hash}', 'true', null, null, null)`;
+    // let query = db.query(sql, [req.params.userid], (err, results) => {
+    //     if (err) throw err;
+
+    //     if(results.affectedRows == 1)
+    //     {
+    //         results.message = "Success";
+    //             res.status(200).json(   
+    //                 results
+    //         );
+    //     }
+        
+    // });
 });
 
 //update file
@@ -87,6 +144,42 @@ router.get('/getOtherData/:id', (req, res) => {
         res.status(200).json(
             results
         );
+    });
+});
+
+router.get('/getSendData/:id', (req, res) => {
+
+    var obj=[];
+    let sql = `SELECT * FROM transaction WHERE respondent_id = ${req.params.id}`;
+    let query = db.query(sql, (err, results) => {
+        if(err) throw err;
+
+        let sql1 = `SELECT * FROM user WHERE id= ${results[0].request_id}`;
+        let query = db.query(sql1, (err, results1) => {
+            if(err) throw err;
+
+            delete results1[0].password;
+
+            let sql2 = `SELECT * FROM data WHERE hash = '${results[0].request_hash}'`;
+            let query = db.query(sql2, (err, results2) => {
+                if(err) throw err;
+
+                obj.push({transaction_data: results, user_data: results1, data: results2});
+        
+                
+                res.status(200).json(
+                    obj
+                );
+
+            })
+
+            
+            
+           
+
+        })
+
+        
     });
 });
 
