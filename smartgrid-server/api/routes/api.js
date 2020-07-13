@@ -59,6 +59,8 @@ router.post('/postRequest', (req, res) => {
                 res.status(200).json(   
                     results
             );
+
+
         }
         
     });
@@ -101,6 +103,33 @@ router.post('/sendFile', (req, res) => {
     //     }
         
     // });
+});
+
+//update file
+router.post('/sendFileData', (req, res) => {
+
+    let sql = `UPDATE transaction SET response_hash = '${req.body.hash}', is_request = 'false' WHERE request_hash ='${req.body.hash}'`;
+    let query = db.query(sql, (err, results) => {
+        if (err) throw err;
+        results.message = "Success";
+        res.status(200).json(   
+            results
+        );
+        // if(results.affectedRows == 1)
+        // {
+        //     results.message = "Success";
+        //     res.status(200).json(   
+        //         results
+        //     );
+        // }
+        // else
+        // {
+        //     results.message = "Error";
+        //     res.status(422).json(   
+        //         results
+        //     );
+        // }
+    });
 });
 
 //update file
@@ -150,37 +179,39 @@ router.get('/getOtherData/:id', (req, res) => {
 router.get('/getSendData/:id', (req, res) => {
 
     var obj=[];
-    let sql = `SELECT * FROM transaction WHERE respondent_id = ${req.params.id}`;
+    let sql = `SELECT * FROM transaction WHERE respondent_id = ${req.params.id} AND is_request = 'true'`;
     let query = db.query(sql, (err, results) => {
         if(err) throw err;
 
-        let sql1 = `SELECT * FROM user WHERE id= ${results[0].request_id}`;
-        let query = db.query(sql1, (err, results1) => {
-            if(err) throw err;
-
-            delete results1[0].password;
-
-            let sql2 = `SELECT * FROM data WHERE hash = '${results[0].request_hash}'`;
-            let query = db.query(sql2, (err, results2) => {
+        for(let i=0; i<results.length; i++)
+        {
+            let sql1 = `SELECT * FROM user WHERE id= ${results[i].request_id}`;
+            let query = db.query(sql1, (err, results1) => {
                 if(err) throw err;
+    
+                delete results1[0].password;
+    
+                let sql2 = `SELECT * FROM data WHERE hash = '${results[i].request_hash}'`;
+                let query = db.query(sql2, (err, results2) => {
+                    if(err) throw err;
+    
+                    obj.push({transaction_data: results[i], user_data: results1[0], data: results2[0]});
 
-                obj.push({transaction_data: results, user_data: results1, data: results2});
-        
-                
-                res.status(200).json(
-                    obj
-                );
-
+                })
             })
-
-            
-            
-           
-
-        })
-
+        }
         
     });
+
+    function myFunc(arg) {
+        res.status(200).json(
+            obj
+        );
+    }
+
+
+    setTimeout(myFunc, 1000, 'funky');
+    
 });
 
 
